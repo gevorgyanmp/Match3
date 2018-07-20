@@ -13,7 +13,15 @@ public class GemElement : MonoBehaviour {
         set
         {
             _index = value;
-            gemSpriteRenderer.sprite = GameController.instance.assetscController.gemsSprite[value];
+            if (value == 99)
+            {
+                gemSpriteRenderer.sprite = null;
+            }
+            else
+            {
+                gemSpriteRenderer.sprite = GameController.instance.assetscController.gemsSprite[value];
+            }
+
         }
         get
         {

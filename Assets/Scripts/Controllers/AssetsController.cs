@@ -8,7 +8,6 @@ public class AssetsController : MonoBehaviour {
     public Sprite[] gemsSprite;
     public GridElement gemElementPrefab;
 
-
     public void Initialisation()
     {
         gridsSprite = new Sprite[2];
@@ -16,17 +15,5 @@ public class AssetsController : MonoBehaviour {
 
         gridsSprite = Resources.LoadAll<Sprite>("Sprites/Grid");
         gemsSprite = Resources.LoadAll<Sprite>("Sprites/Gem");
-
-
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

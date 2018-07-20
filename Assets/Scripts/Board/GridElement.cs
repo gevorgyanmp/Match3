@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ public class GridElement : MonoBehaviour {
             else
             {
                 spriteRenderer.sprite = null;
+                gemElement.index = 99;
             }
         }
         get
@@ -63,13 +65,22 @@ public class GridElement : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        GameController.instance.gridController.ClickCalc(this);
+
+            if (isActive)
+            {
+                GameController.instance.gridController.ClickCalc(this);
+                GameController.instance.matchController.CheckMatchVertical();
+        }
 
     }
 
-    public void GetGemToPosition ()
+    public void GetGemToPosition (float speed)
     {
         gemElement.transform.SetParent(this.transform);
-        gemElement.transform.localPosition = Vector3.zero;
+        Sequence seq = DOTween.Sequence();
+        seq.Insert(0, gemElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
+        seq.Play();
     }
+
+
 }
