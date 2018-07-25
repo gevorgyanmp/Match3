@@ -4,55 +4,90 @@ using UnityEngine;
 
 public class MatchController : MonoBehaviour {
 
-    public List<GridElement> matchListTemp;
-    public List<List<GridElement>> matchListFull;
+    public List<GridElement> matchListVer;
+    public List<GridElement> matchListHor;
 
-    public void CheckMatchVertical ()
+    public bool CheckMatchVertical ()
     {
         for (int i = 0; i < GameController.instance.gridController.width; i++)
         {
-            matchListTemp = new List<GridElement>();
+            matchListVer = new List<GridElement>();
+            
             for (int j = 0; j < GameController.instance.gridController.height; j++)
             {
                 if(j==0)
                 {
-                    matchListTemp.Add(GameController.instance.gridController.matrix[i, j]);
+                    matchListVer.Add(GameController.instance.gridController.matrix[i, j]);
                 }
                 else if(GameController.instance.gridController.matrix[i, j].gemElement.index == GameController.instance.gridController.matrix[i, j-1].gemElement.index)
                 {
-                    matchListTemp.Add(GameController.instance.gridController.matrix[i, j]);
+                    matchListVer.Add(GameController.instance.gridController.matrix[i, j]);
                 }
                 else
                 {
-                    if (matchListTemp.Count == 4)
+                    if (matchListVer.Count >= 3)
                     {
-                      //  Debug.Log("Count 4 from " + matchListTemp[0].positionVecor2 + " to " + matchListTemp[matchListTemp.Count - 1].positionVecor2);
-                        for (int p = 0; p < matchListTemp.Count; p++)
-                        {
-                            GameController.instance.gridController.DropElement(matchListTemp[p]);
-                        }
-                        matchListTemp = new List<GridElement>();
-                    }
-                    else if (matchListTemp.Count == 3)
-                    {
-                        for (int p = 0; p < matchListTemp.Count; p++)
-                        {
-                            GameController.instance.gridController.DropElement(matchListTemp[p]);
-                        }
-                        matchListTemp = new List<GridElement>();
+                        return true;
                     }
                     else
                     {
-                        matchListTemp = new List<GridElement>();
+                        matchListVer = new List<GridElement>();
+                        matchListVer.Add(GameController.instance.gridController.matrix[i, j]);
                     }
-                    matchListTemp.Add(GameController.instance.gridController.matrix[i, j]);
                 }
-
-               
             }
-
+            if (matchListVer.Count >=3)
+            {
+                return true;
+            }
+            else
+            {
+                matchListVer = new List<GridElement>();
+            }
         }
+        return false;
+    }
 
+    public bool CheckMatchHorizontal()
+    {
+        for (int j = 0; j < GameController.instance.gridController.height; j++)
+        {
+            matchListHor = new List<GridElement>();
+
+            for (int i = 0; i < GameController.instance.gridController.width; i++)
+            {
+                if (i == 0)
+                {
+                    matchListHor.Add(GameController.instance.gridController.matrix[i, j]);
+                }
+                else if (GameController.instance.gridController.matrix[i, j].gemElement.index == GameController.instance.gridController.matrix[i-1, j].gemElement.index)
+                {
+                    matchListHor.Add(GameController.instance.gridController.matrix[i, j]);
+                }
+                else
+                {
+                    if (matchListHor.Count >= 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        matchListHor = new List<GridElement>();
+                        matchListHor.Add(GameController.instance.gridController.matrix[i, j]);
+
+                    }
+                }
+            }
+            if (matchListHor.Count >= 3)
+            {
+                return true;
+            }
+            else
+            {
+                matchListHor = new List<GridElement>();
+            }
+        }
+        return false;
     }
 
     public void Initialisation()

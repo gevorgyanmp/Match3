@@ -68,18 +68,43 @@ public class GridElement : MonoBehaviour {
 
             if (isActive)
             {
-                GameController.instance.gridController.ClickCalc(this);
+            GameController.instance.gridController.ClickCalc(this);
+            Sequence seq = DOTween.Sequence();
+            seq.InsertCallback(0.8f, () =>
+            {
+                GameController.instance.matchController.CheckMatchHorizontal();
                 GameController.instance.matchController.CheckMatchVertical();
+                if (GameController.instance.matchController.CheckMatchHorizontal())
+                {
+                    GameController.instance.gridController.DropElementHorizontal(GameController.instance.matchController.matchListHor);
+                }
+                if(GameController.instance.matchController.CheckMatchVertical())
+                {
+                    GameController.instance.gridController.DropElementVertical(GameController.instance.matchController.matchListVer);
+                }
+            });
+             
         }
 
     }
 
-    public void GetGemToPosition (float speed)
+    public void GetGemToPosition (float speed,bool isAnim = true)
     {
         gemElement.transform.SetParent(this.transform);
-        Sequence seq = DOTween.Sequence();
-        seq.Insert(0, gemElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
-        seq.Play();
+        if(isAnim)
+        {
+            Sequence seq = DOTween.Sequence();
+            seq.Insert(0, gemElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
+            seq.Play();
+            seq.onComplete = () => {
+
+            };
+        }
+        else
+        {
+            gemElement.transform.localPosition = Vector3.zero;
+        }
+        
     }
 
 

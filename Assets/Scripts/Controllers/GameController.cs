@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
     public AssetsController assetscController;
     public GridController gridController;
     public MatchController matchController;
+    public UIController uIController;
 
 
     public static GameController instance;
@@ -29,6 +30,7 @@ public class GameController : MonoBehaviour {
         assetscController.Initialisation();
         gridController.Initialisation();
         matchController.Initialisation();
+        uIController.Initialisation();
     }
 
 }

@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GridController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MatchController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\UIController.cs" />
     <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
