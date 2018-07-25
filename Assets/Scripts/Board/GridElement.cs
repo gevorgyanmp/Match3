@@ -70,7 +70,7 @@ public class GridElement : MonoBehaviour {
             {
             GameController.instance.gridController.ClickCalc(this);
             Sequence seq = DOTween.Sequence();
-            seq.InsertCallback(0.8f, () =>
+            seq.InsertCallback(0.9f, () =>
             {
                 GameController.instance.matchController.CheckMatchHorizontal();
                 GameController.instance.matchController.CheckMatchVertical();
@@ -88,23 +88,23 @@ public class GridElement : MonoBehaviour {
 
     }
 
-    public void GetGemToPosition (float speed,bool isAnim = true)
+    public void GetGemToPosition (float speed,bool isAnim = true, bool isMatch = true)
     {
         gemElement.transform.SetParent(this.transform);
         if(isAnim)
         {
             Sequence seq = DOTween.Sequence();
             seq.Insert(0, gemElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
+            if(!isMatch)
+                {
+                seq.SetLoops(2, LoopType.Yoyo);
+            }
             seq.Play();
-            seq.onComplete = () => {
-
-            };
         }
         else
         {
             gemElement.transform.localPosition = Vector3.zero;
         }
-        
     }
 
 

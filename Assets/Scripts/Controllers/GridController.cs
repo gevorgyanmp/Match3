@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +10,8 @@ public class GridController : MonoBehaviour {
     public int dropDistance = 2;
     public List<GridElement> gridElementsList;
     public GridElement[] emtyGridElement;
-
-
     public GridElement[,] matrix;
     public Transform containerTransform;
-
     
 
     public void Initialisation()
@@ -44,6 +42,7 @@ public class GridController : MonoBehaviour {
         
 
     }
+
     public void Shuffle(bool isAnim = false, bool shuflleButton =false)
     {
         while (GameController.instance.matchController.CheckMatchHorizontal() || GameController.instance.matchController.CheckMatchVertical()  || shuflleButton==true)
@@ -72,7 +71,6 @@ public class GridController : MonoBehaviour {
 
     }
 
-
     public void CreateEmptyCells()
     {
         int xRange = Random.Range(0, width);
@@ -87,7 +85,6 @@ public class GridController : MonoBehaviour {
         }
     }
 
-
     public void ClickCalc(GridElement item)
     {
         if(gridElementsList.Count==1)
@@ -98,33 +95,44 @@ public class GridController : MonoBehaviour {
             }
         }
         gridElementsList.Add(item);
-        if(gridElementsList.Count == 2)
+        if (gridElementsList.Count == 2)
         {
-            if(Vector2.Distance(gridElementsList[0].positionVecor2,gridElementsList[1].positionVecor2)==1)
-            {
-                GemElement _temp = gridElementsList[0].gemElement;
-                gridElementsList[0].gemElement = gridElementsList[1].gemElement;
-                gridElementsList[1].gemElement = _temp;
+                if (Vector2.Distance(gridElementsList[0].positionVecor2, gridElementsList[1].positionVecor2) == 1)
+                {
+                    GemElement _temp = gridElementsList[0].gemElement;
+                    gridElementsList[0].gemElement = gridElementsList[1].gemElement;
+                    gridElementsList[1].gemElement = _temp;
 
-                gridElementsList[0].GetGemToPosition(0.3f);
-                gridElementsList[1].GetGemToPosition(0.3f);
-            }
-            else
-            {
-                Debug.Log("too far");
-            }
+                   
+                    if (!GameController.instance.matchController.CheckMatchVertical() && !GameController.instance.matchController.CheckMatchHorizontal())
+                    {
+                        CallGemBack(item);
+
+                    }
+                    else
+                    {
+                        gridElementsList[0].GetGemToPosition(0.3f);
+                        gridElementsList[1].GetGemToPosition(0.3f);
+
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("too far");
+                }
+            
             gridElementsList = new List<GridElement>();
         }
     }
-	
-    public void DropElement (GridElement dropGem)
-    {
-        GemElement tempGem = dropGem.gemElement;
 
-            tempGem.transform.position += Vector3.up * side * dropDistance*(height- dropGem.positionVecor2.y+1);
-            tempGem.index = Random.Range(0, GameController.instance.assetscController.gemsSprite.Length);
-            dropGem.GetGemToPosition(0.7f);
-            Debug.Log(dropGem.positionVecor2.y + " vs " + (height - 1));
+    public void CallGemBack(GridElement item)
+    {
+        gridElementsList[1].GetGemToPosition(0.6f, true, false);
+        gridElementsList[0].GetGemToPosition(0.6f, true, false);
+        GemElement _temp1 = gridElementsList[1].gemElement;
+        gridElementsList[1].gemElement = gridElementsList[0].gemElement;
+        gridElementsList[0].gemElement = _temp1;
     }
 
     public void DropElementVertical(List<GridElement> matchlist)
@@ -173,7 +181,6 @@ public class GridController : MonoBehaviour {
 
     public void DropElementHorizontal(List<GridElement> matchlist)
     {
-        Debug.Log((int)matchlist[matchlist.Count - 1].positionVecor2.x);
         List<GemElement> _tempGem = new List<GemElement>();
         for (int i = 0; i < matchlist.Count; i++)
         {
@@ -187,7 +194,6 @@ public class GridController : MonoBehaviour {
             {
                 matrix[(int)matchlist[i].positionVecor2.x, (int)matchlist[i].positionVecor2.y + j].gemElement = matrix[(int)matchlist[i].positionVecor2.x, (int)matchlist[i].positionVecor2.y +(j + 1)].gemElement;
                 matrix[(int)matchlist[i].positionVecor2.x, (int)matchlist[i].positionVecor2.y + j].GetGemToPosition(0.7f);
-                Debug.Log("Loop " + i + " - " + j);
             }
             matrix[(int)matchlist[i].positionVecor2.x, height - 1].gemElement =  _tempGem[i];
             matrix[(int)matchlist[i].positionVecor2.x, height - 1].GetGemToPosition(0.7f);
