@@ -15,7 +15,7 @@ public class GemElement : MonoBehaviour {
             _index = value;
             if (value == 99)
             {
-               // gemSpriteRenderer.sprite = null;
+               gemSpriteRenderer.sprite = null;
             }
             else
             {

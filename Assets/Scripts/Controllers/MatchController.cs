@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,8 +26,9 @@ public class MatchController : MonoBehaviour {
                 }
                 else
                 {
-                    if (matchListVer.Count >= 3)
+                  if (matchListVer.Count >= 3)
                     {
+                        Debug.Log("Match Vertical");
                         return true;
                     }
                     else
@@ -38,6 +40,7 @@ public class MatchController : MonoBehaviour {
             }
             if (matchListVer.Count >=3)
             {
+                Debug.Log("Match Vertical");
                 return true;
             }
             else
@@ -68,6 +71,7 @@ public class MatchController : MonoBehaviour {
                 {
                     if (matchListHor.Count >= 3)
                     {
+                        Debug.Log("Match Horizontal");
                         return true;
                     }
                     else
@@ -80,6 +84,7 @@ public class MatchController : MonoBehaviour {
             }
             if (matchListHor.Count >= 3)
             {
+                Debug.Log("Match Horizontal");
                 return true;
             }
             else
@@ -88,6 +93,59 @@ public class MatchController : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    public bool MatchHor()
+    {
+        Sequence seq = DOTween.Sequence();
+        bool matchHor = CheckMatchHorizontal();
+        if (matchHor)
+        {
+
+
+            seq.InsertCallback(0.4f, () =>
+            {
+                GameController.instance.gridController.DropElementHorizontal(matchListHor);
+            });
+            return true;
+        }
+        return false;
+    }
+
+    public bool MatchVer()
+    {
+        Sequence seq = DOTween.Sequence();
+        bool matchVer = CheckMatchVertical();
+        if(matchVer)
+        {
+            seq.InsertCallback(0.4f, () =>
+            {
+                GameController.instance.gridController.DropElementVertical(matchListVer);
+            });
+            return true;
+        }
+        return false;
+    }
+
+    public void EliMatch()
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.InsertCallback(1.4f,  () =>
+        {
+            CheckMatch();
+        });
+        seq.Play();
+    }
+
+    public void CheckMatch()
+    {
+        bool MHor = MatchHor();
+        bool MVer = MatchVer();
+        if (MHor || MVer)
+        {
+            EliMatch();
+        }
     }
 
     public void Initialisation()

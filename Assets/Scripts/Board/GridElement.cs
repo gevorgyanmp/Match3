@@ -6,7 +6,9 @@ using UnityEngine;
 public class GridElement : MonoBehaviour {
 
     public GemElement gemElement;
+    public BombElement bombElement;
     public SpriteRenderer spriteRenderer;
+    public bool mHor, mVer;
 
     private Vector2 _positionVecor2;
     public Vector2 positionVecor2
@@ -56,7 +58,6 @@ public class GridElement : MonoBehaviour {
     }
     
 
-
     public void Initialisation()
     {
         isActive = true;
@@ -65,27 +66,10 @@ public class GridElement : MonoBehaviour {
 
     private void OnMouseDown()
     {
-
             if (isActive)
             {
-            GameController.instance.gridController.ClickCalc(this);
-            Sequence seq = DOTween.Sequence();
-            seq.InsertCallback(0.9f, () =>
-            {
-                GameController.instance.matchController.CheckMatchHorizontal();
-                GameController.instance.matchController.CheckMatchVertical();
-                if (GameController.instance.matchController.CheckMatchHorizontal())
-                {
-                    GameController.instance.gridController.DropElementHorizontal(GameController.instance.matchController.matchListHor);
-                }
-                if(GameController.instance.matchController.CheckMatchVertical())
-                {
-                    GameController.instance.gridController.DropElementVertical(GameController.instance.matchController.matchListVer);
-                }
-            });
-             
-        }
-
+                GameController.instance.gridController.ClickCalc(this);
+            }
     }
 
     public void GetGemToPosition (float speed,bool isAnim = true, bool isMatch = true)

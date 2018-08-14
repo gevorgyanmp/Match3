@@ -562,7 +562,9 @@ MonoBehaviour:
   dropDistance: 2
   gridElementsList: []
   emtyGridElement: []
-  containerTransform: {fileID: 0}
+  containerTransform: {fileID: 1241745751}
+  mHor: 0
+  mVer: 0
 --- !u!4 &1437643005
 Transform:
   m_ObjectHideFlags: 0
@@ -699,6 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridsSprite: []
   gemsSprite: []
+  bombSprite: []
   gemElementPrefab: {fileID: 114623135840160184, guid: d64f7a973c6bb134e903b96133e2f6dd,
     type: 2}
 --- !u!4 &1896497780

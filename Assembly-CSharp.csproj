@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
+    <Compile Include="Assets\Scripts\Board\BombElement.cs" />
     <Compile Include="Assets\Scripts\Board\GemElement.cs" />
     <Compile Include="Assets\Scripts\Board\GridElement.cs" />
     <Compile Include="Assets\Scripts\Controllers\AssetsController.cs" />
