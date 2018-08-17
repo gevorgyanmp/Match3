@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class GridElement : MonoBehaviour {
 
-    public GemElement gemElement;
-    public BombElement bombElement;
+    public SwipeElement swipeElement;
     public SpriteRenderer spriteRenderer;
     public bool mHor, mVer;
 
@@ -48,7 +47,8 @@ public class GridElement : MonoBehaviour {
             else
             {
                 spriteRenderer.sprite = null;
-                gemElement.index = 99;
+                swipeElement.gemElement.index = 99;
+                swipeElement.bombElement.index = 99;
             }
         }
         get
@@ -61,33 +61,44 @@ public class GridElement : MonoBehaviour {
     public void Initialisation()
     {
         isActive = true;
-
     }
 
     private void OnMouseDown()
     {
             if (isActive)
             {
+
                 GameController.instance.gridController.ClickCalc(this);
+
+                if (swipeElement.bombElement.index == 1)
+                {
+                    GameController.instance.bombController.BangHorizontal(this);
+                }
+                else if(swipeElement.bombElement.index == 2)
+                {
+                    GameController.instance.bombController.BangVertical(this);
+                }
             }
     }
 
     public void GetGemToPosition (float speed,bool isAnim = true, bool isMatch = true)
     {
-        gemElement.transform.SetParent(this.transform);
+        swipeElement.transform.SetParent(this.transform);
         if(isAnim)
         {
             Sequence seq = DOTween.Sequence();
-            seq.Insert(0, gemElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
+            seq.Insert(0, swipeElement.transform.DOLocalMove(Vector3.zero, speed).SetEase(Ease.InBack));
             if(!isMatch)
                 {
                 seq.SetLoops(2, LoopType.Yoyo);
             }
+           
             seq.Play();
+
         }
         else
         {
-            gemElement.transform.localPosition = Vector3.zero;
+            swipeElement.transform.localPosition = Vector3.zero;
         }
     }
 

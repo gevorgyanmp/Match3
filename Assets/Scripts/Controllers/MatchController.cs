@@ -20,7 +20,7 @@ public class MatchController : MonoBehaviour {
                 {
                     matchListVer.Add(GameController.instance.gridController.matrix[i, j]);
                 }
-                else if(GameController.instance.gridController.matrix[i, j].gemElement.index == GameController.instance.gridController.matrix[i, j-1].gemElement.index)
+                else if(GameController.instance.gridController.matrix[i, j].swipeElement.gemElement.index == GameController.instance.gridController.matrix[i, j-1].swipeElement.gemElement.index)
                 {
                     matchListVer.Add(GameController.instance.gridController.matrix[i, j]);
                 }
@@ -28,7 +28,6 @@ public class MatchController : MonoBehaviour {
                 {
                   if (matchListVer.Count >= 3)
                     {
-                        Debug.Log("Match Vertical");
                         return true;
                     }
                     else
@@ -40,7 +39,6 @@ public class MatchController : MonoBehaviour {
             }
             if (matchListVer.Count >=3)
             {
-                Debug.Log("Match Vertical");
                 return true;
             }
             else
@@ -63,15 +61,15 @@ public class MatchController : MonoBehaviour {
                 {
                     matchListHor.Add(GameController.instance.gridController.matrix[i, j]);
                 }
-                else if (GameController.instance.gridController.matrix[i, j].gemElement.index == GameController.instance.gridController.matrix[i-1, j].gemElement.index)
+                else if (GameController.instance.gridController.matrix[i, j].swipeElement.gemElement.index == GameController.instance.gridController.matrix[i-1, j].swipeElement.gemElement.index)
                 {
                     matchListHor.Add(GameController.instance.gridController.matrix[i, j]);
                 }
                 else
                 {
-                    if (matchListHor.Count >= 3)
+
+                   if (matchListHor.Count >= 3)
                     {
-                        Debug.Log("Match Horizontal");
                         return true;
                     }
                     else
@@ -84,7 +82,6 @@ public class MatchController : MonoBehaviour {
             }
             if (matchListHor.Count >= 3)
             {
-                Debug.Log("Match Horizontal");
                 return true;
             }
             else
@@ -101,10 +98,13 @@ public class MatchController : MonoBehaviour {
         bool matchHor = CheckMatchHorizontal();
         if (matchHor)
         {
-
-
             seq.InsertCallback(0.4f, () =>
             {
+                if(matchListHor.Count>3)
+                {
+                    GameController.instance.bombController.CreateBombHorizontal(matchListHor[1].swipeElement);
+                    matchListHor.Remove(matchListHor[1]);
+                }
                 GameController.instance.gridController.DropElementHorizontal(matchListHor);
             });
             return true;
@@ -120,6 +120,10 @@ public class MatchController : MonoBehaviour {
         {
             seq.InsertCallback(0.4f, () =>
             {
+                if (matchListVer.Count>3)
+                {
+                    GameController.instance.bombController.CreateBombVertical(matchListVer);
+                }
                 GameController.instance.gridController.DropElementVertical(matchListVer);
             });
             return true;
@@ -142,7 +146,7 @@ public class MatchController : MonoBehaviour {
     {
         bool MHor = MatchHor();
         bool MVer = MatchVer();
-        if (MHor || MVer)
+        if ( MHor || MVer)
         {
             EliMatch();
         }

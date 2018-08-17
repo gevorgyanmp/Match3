@@ -13,7 +13,14 @@ public class BombElement : MonoBehaviour {
         set
         {
             _index = value;
+            if (value == 99)
+            {
+                bombSpriteRenderer.sprite = null;
+            }
+            else
+            {
                 bombSpriteRenderer.sprite = GameController.instance.assetscController.bombSprite[value];
+            }
         }
         get
         {

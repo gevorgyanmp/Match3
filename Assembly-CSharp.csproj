@@ -64,7 +64,9 @@
     <Compile Include="Assets\Scripts\Board\BombElement.cs" />
     <Compile Include="Assets\Scripts\Board\GemElement.cs" />
     <Compile Include="Assets\Scripts\Board\GridElement.cs" />
+    <Compile Include="Assets\Scripts\Board\SwipeElement.cs" />
     <Compile Include="Assets\Scripts\Controllers\AssetsController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\BombController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GridController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MatchController.cs" />
