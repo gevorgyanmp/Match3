@@ -11,7 +11,14 @@ public class BombController : MonoBehaviour {
 
         for (int i = 0; i < GameController.instance.gridController.width; i++)
         {
-            bangListHor.Add(GameController.instance.gridController.matrix[i, cordY]);
+            if(GameController.instance.gridController.matrix[i, cordY].swipeElement.gemElement.index == 99 && GameController.instance.gridController.matrix[i, cordY].swipeElement.bombElement.index == 2)
+            {
+                BangVertical(GameController.instance.gridController.matrix[i, cordY]);
+            }
+            else
+            {
+                bangListHor.Add(GameController.instance.gridController.matrix[i, cordY]);
+            }
         }
         GameController.instance.gridController.DropElementHorizontal(bangListHor);
         bomb.swipeElement.bombElement.index = 99;
@@ -24,7 +31,14 @@ public class BombController : MonoBehaviour {
         int cordX = (int)bomb.positionVecor2.x;
         for (int i = 0; i < GameController.instance.gridController.height; i++)
         {
-            bangListVer.Add(GameController.instance.gridController.matrix[cordX, i]);
+            if(GameController.instance.gridController.matrix[cordX, i].swipeElement.gemElement.index == 99 && GameController.instance.gridController.matrix[cordX, i].swipeElement.bombElement.index == 1)
+            {
+                BangHorizontal(GameController.instance.gridController.matrix[cordX, i]);
+            }
+            else
+            {
+                bangListVer.Add(GameController.instance.gridController.matrix[cordX, i]);
+            }
         }
         GameController.instance.gridController.DropElementVertical(bangListVer);
         bomb.swipeElement.bombElement.index = 99;
@@ -40,13 +54,21 @@ public class BombController : MonoBehaviour {
     public void CreateBombVertical(List<GridElement> list)
     {
         SwipeElement _tempswipe = list[0].swipeElement;
-        list[1].swipeElement.gemElement.index = 99;
-        list[1].swipeElement.bombElement.index = 1;
-        list[0].swipeElement = list[1].swipeElement;
-        list[1].swipeElement = _tempswipe;
+        GridElement _turnToBomb;
+        if (GameController.instance.gridController.gridElementsList.Count != 0)
+        {
+           _turnToBomb = GameController.instance.matchController.CheckTransformBomb(GameController.instance.gridController.gridElementsList, list);
+        }
+        else
+        {
+            _turnToBomb = list[Random.Range(0, list.Count)];
+        }
+        _turnToBomb.swipeElement.gemElement.index = 99;
+        _turnToBomb.swipeElement.bombElement.index = 1;
+        list[0].swipeElement = _turnToBomb.swipeElement;
+        _turnToBomb.swipeElement = _tempswipe;
         list[0].GetGemToPosition(0.7f);
         list.Remove(list[0]);
-
     }
 
     public void Initialisation()

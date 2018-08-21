@@ -67,8 +67,10 @@ public class GridElement : MonoBehaviour {
     {
             if (isActive)
             {
-
-                GameController.instance.gridController.ClickCalc(this);
+                if (GameController.instance.gridController.gridElementsList.Count<2)
+                {
+                    GameController.instance.gridController.ClickCalc(this);
+                }
 
                 if (swipeElement.bombElement.index == 1)
                 {

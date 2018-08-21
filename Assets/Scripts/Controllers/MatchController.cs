@@ -102,8 +102,19 @@ public class MatchController : MonoBehaviour {
             {
                 if(matchListHor.Count>3)
                 {
-                    GameController.instance.bombController.CreateBombHorizontal(matchListHor[1].swipeElement);
-                    matchListHor.Remove(matchListHor[1]);
+                    if(GameController.instance.gridController.gridElementsList.Count!=0)
+                    {
+                        GridElement gemToBomb = CheckTransformBomb(GameController.instance.gridController.gridElementsList, matchListHor);
+                        GameController.instance.bombController.CreateBombHorizontal(gemToBomb.swipeElement);
+                        matchListHor.Remove(gemToBomb);
+                    }
+                    else
+                    {
+                        GridElement gemToBomb = matchListHor[Random.Range(0, matchListHor.Count)];
+                        GameController.instance.bombController.CreateBombHorizontal(gemToBomb.swipeElement);
+                        matchListHor.Remove(gemToBomb);
+                    }
+                    
                 }
                 GameController.instance.gridController.DropElementHorizontal(matchListHor);
             });
@@ -134,7 +145,6 @@ public class MatchController : MonoBehaviour {
     public void EliMatch()
     {
         Sequence seq = DOTween.Sequence();
-
         seq.InsertCallback(1.4f,  () =>
         {
             CheckMatch();
@@ -150,6 +160,22 @@ public class MatchController : MonoBehaviour {
         {
             EliMatch();
         }
+    }
+
+    public GridElement CheckTransformBomb(List<GridElement> calcList, List<GridElement> matchList)
+    {
+        GridElement curGrid = null;
+        for (int i = 0; i < calcList.Count; i++)
+        {
+            for (int j = 0; j < matchList.Count; j++)
+            {
+                if (calcList[i].positionVecor2 == matchList[j].positionVecor2)
+                {
+                    curGrid = calcList[i];
+                }
+            }
+        }
+        return curGrid;
     }
 
     public void Initialisation()

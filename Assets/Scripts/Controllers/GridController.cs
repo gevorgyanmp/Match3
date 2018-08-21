@@ -15,7 +15,6 @@ public class GridController : MonoBehaviour {
     public bool mHor, mVer;
 
 
-
     public void Initialisation()
     {
         gridElementsList = new List<GridElement>();
@@ -92,7 +91,7 @@ public class GridController : MonoBehaviour {
         {
             if(gridElementsList[0]==item)
             {
-                return ;
+                return;
             }
         }
         gridElementsList.Add(item);
@@ -114,16 +113,19 @@ public class GridController : MonoBehaviour {
                     {
                         gridElementsList[0].GetGemToPosition(0.3f);
                         gridElementsList[1].GetGemToPosition(0.3f);
-                        gridElementsList = new List<GridElement>();
                         GameController.instance.matchController.CheckMatch();
-                    }
+                }
             }
             else
             {
-                Debug.Log("too far");
                 gridElementsList = new List<GridElement>();
+                gridElementsList.Add(item);
             }
+        }
+        if (gridElementsList.Count > 2)
+        {
             gridElementsList = new List<GridElement>();
+            gridElementsList.Add(item);
         }
     }
 
@@ -157,6 +159,7 @@ public class GridController : MonoBehaviour {
              matrix[(int)matchlist[0].positionVecor2.x, height - _tempSwipe.Count + i].swipeElement = _tempSwipe[i];
              matrix[(int)matchlist[0].positionVecor2.x, height - _tempSwipe.Count + i].GetGemToPosition(0.7f);
          }
+        GameController.instance.gridController.gridElementsList = new List<GridElement>();
 
     }
 
@@ -180,6 +183,7 @@ public class GridController : MonoBehaviour {
             matrix[(int)matchlist[i].positionVecor2.x, height - 1].swipeElement = _tempSwipe[i];
             matrix[(int)matchlist[i].positionVecor2.x, height - 1].GetGemToPosition(0.7f);
         }
+        GameController.instance.gridController.gridElementsList = new List<GridElement>();
     }
 
 }
