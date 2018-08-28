@@ -67,20 +67,26 @@ public class GridElement : MonoBehaviour {
     {
             if (isActive)
             {
-                if (GameController.instance.gridController.gridElementsList.Count<2)
-                {
-                    GameController.instance.gridController.ClickCalc(this);
-                }
-
-                if (swipeElement.bombElement.index == 1)
-                {
-                    GameController.instance.bombController.BangHorizontal(this);
-                }
-                else if(swipeElement.bombElement.index == 2)
-                {
-                    GameController.instance.bombController.BangVertical(this);
-                }
+             if (GameController.instance.gridController.gridElementsList.Count<2 && GameController.instance.matchController.isAuto == false)
+             {
+                 GameController.instance.gridController.ClickCalc(this);
+             }
+             if (swipeElement.bombElement.index == 0)
+             {
+                GameController.instance.bombController.BangCube(this);
+                GameController.instance.conditionController.CheckMoves();
             }
+            else if (swipeElement.bombElement.index == 1)
+             {
+                GameController.instance.bombController.BangHorizontal(this);
+                GameController.instance.conditionController.CheckMoves();
+            }
+            else if(swipeElement.bombElement.index == 2)
+             {
+                GameController.instance.bombController.BangVertical(this);
+                GameController.instance.conditionController.CheckMoves();
+            }
+        }
     }
 
     public void GetGemToPosition (float speed,bool isAnim = true, bool isMatch = true)

@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
     public MatchController matchController;
     public UIController uIController;
     public BombController bombController;
+    public ConditionController conditionController;
 
 
     public static GameController instance;
@@ -31,8 +32,9 @@ public class GameController : MonoBehaviour {
         assetscController.Initialisation();
         gridController.Initialisation();
         matchController.Initialisation();
-        uIController.Initialisation();
         bombController.Initialisation();
+        conditionController.Initialisation();
+        uIController.Initialisation();
     }
 
 }

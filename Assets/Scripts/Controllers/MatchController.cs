@@ -7,6 +7,8 @@ public class MatchController : MonoBehaviour {
 
     public List<GridElement> matchListVer;
     public List<GridElement> matchListHor;
+    public List<GridElement> matchListCube;
+    public bool isAuto = false;
 
     public bool CheckMatchVertical ()
     {
@@ -92,6 +94,57 @@ public class MatchController : MonoBehaviour {
         return false;
     }
 
+    public bool CheckMatchCube()
+    {
+        for (int j = 0; j < GameController.instance.gridController.height; j++)
+        {
+            matchListCube = new List<GridElement>();
+
+            for (int i = 0; i < GameController.instance.gridController.width; i++)
+            {
+                if (i == 0)
+                {
+                    matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                }
+                else if (GameController.instance.gridController.matrix[i, j].swipeElement.gemElement.index == GameController.instance.gridController.matrix[i - 1, j].swipeElement.gemElement.index && j+1 < GameController.instance.gridController.height)
+                {
+                    matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                    j++;
+                    i--;
+                    if(GameController.instance.gridController.matrix[i, j].swipeElement.gemElement.index == GameController.instance.gridController.matrix[i , j-1].swipeElement.gemElement.index)
+                    {
+                        matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                        i++;
+                        if(GameController.instance.gridController.matrix[i, j].swipeElement.gemElement.index == GameController.instance.gridController.matrix[i - 1, j].swipeElement.gemElement.index)
+                        {
+                            matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                            return true;
+                        }
+                        else
+                        {
+                            j--;
+                            matchListCube = new List<GridElement>();
+                            matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                        }
+                    }
+                    else
+                    {
+                        j--;
+                        i++;
+                        matchListCube = new List<GridElement>();
+                        matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                    }
+                }
+                else
+                {
+                    matchListCube = new List<GridElement>();
+                    matchListCube.Add(GameController.instance.gridController.matrix[i, j]);
+                }
+            }
+        }
+        return false;
+    }
+
     public bool MatchHor()
     {
         Sequence seq = DOTween.Sequence();
@@ -116,7 +169,8 @@ public class MatchController : MonoBehaviour {
                     }
                     
                 }
-                GameController.instance.gridController.DropElementHorizontal(matchListHor);
+                GameController.instance.conditionController.CheckCondition(matchListHor[0].swipeElement.gemElement);
+                GameController.instance.gridController.DropElement(matchListHor);
             });
             return true;
         }
@@ -135,7 +189,25 @@ public class MatchController : MonoBehaviour {
                 {
                     GameController.instance.bombController.CreateBombVertical(matchListVer);
                 }
-                GameController.instance.gridController.DropElementVertical(matchListVer);
+                GameController.instance.conditionController.CheckCondition(matchListVer[0].swipeElement.gemElement);
+                GameController.instance.gridController.DropElement(matchListVer);
+            });
+            return true;
+        }
+        return false;
+    }
+
+    public bool MatchCub()
+    {
+        Sequence seq = DOTween.Sequence();
+        bool matchCub = CheckMatchCube();
+        if (matchCub)
+        {
+            seq.InsertCallback(0.4f, () =>
+            {
+                GameController.instance.conditionController.CheckCondition(matchListCube[0].swipeElement.gemElement);
+                GameController.instance.bombController.CreateBombCube(matchListCube);
+                GameController.instance.gridController.DropElement(matchListCube);
             });
             return true;
         }
@@ -156,9 +228,15 @@ public class MatchController : MonoBehaviour {
     {
         bool MHor = MatchHor();
         bool MVer = MatchVer();
-        if ( MHor || MVer)
+        bool MCub = MatchCub();
+        if ( MHor || MVer || MCub)
         {
+            isAuto = true;
             EliMatch();
+        }
+        else
+        {
+            isAuto = false;
         }
     }
 
