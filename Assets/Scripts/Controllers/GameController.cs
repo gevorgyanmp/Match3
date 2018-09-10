@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
     public UIController uIController;
     public BombController bombController;
     public ConditionController conditionController;
-    public SceneController sceneController;
+
 
 
     public static GameController instance;
@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour {
         matchController.Initialisation();
         bombController.Initialisation();
         conditionController.Initialisation();
-        sceneController.Initialisation();
         uIController.Initialisation();
     }
 
